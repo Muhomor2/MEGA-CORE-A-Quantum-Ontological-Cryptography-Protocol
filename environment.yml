@@ -1,0 +1,6 @@
+name: MEGA-CORE
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
