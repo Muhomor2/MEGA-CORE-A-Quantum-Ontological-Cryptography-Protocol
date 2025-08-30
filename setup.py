@@ -6,7 +6,7 @@ setup(
     version='0.1.0',
     description='A quantum-ontological cryptography protocol for deciphering fractal patterns of consciousness.',
     author='Your Name',
-    url='https://github.com/YourUsername/mega-core',
+    url='https://github.com/muhomor2/mega-core',
     packages=find_packages(),
     classifiers=[
         'Development Status :: 3 - Alpha',
