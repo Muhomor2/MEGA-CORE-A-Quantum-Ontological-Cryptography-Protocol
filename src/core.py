@@ -1,39 +1,26 @@
-# src/core.py
-# The core analytical engine for the MEGA-CORE protocol.
-
-import math
-from collections import Counter
-import networkx as nx
-
-def calculate_semantic_fractal_dimension(text: str) -> float:
+def find_most_resonant_documents(field: OntologicalField) -> dict:
     """
-    Calculates the Semantic Fractal Dimension (Df) of a given text,
-    based on word frequency and network analysis.
+    Finds the two most ontologically resonant documents in the field.
     """
-    if not text:
-        return 0.0
+    if len(field.documents) < 2:
+        return {}
 
-    # 1. Normalize and tokenize the text
-    normalized_text = text.lower().replace('.', '').replace(',', '')
-    words = normalized_text.split()
-    
-    # 2. Build a simple word network (graph)
-    G = nx.Graph()
-    for i in range(len(words) - 1):
-        G.add_edge(words[i], words[i+1])
+    max_resonance = -1
+    resonant_pair = None
 
-    # 3. Calculate network metrics
-    num_nodes = G.number_of_nodes()
-    num_edges = G.number_of_edges()
+    for i in range(len(field.documents)):
+        for j in range(i + 1, len(field.documents)):
+            resonance = field.get_document_resonance(i, j)
+            if resonance > max_resonance:
+                max_resonance = resonance
+                resonant_pair = (i, j)
 
-    # 4. Calculate Df based on network properties
-    if num_edges <= 1:
-        return 1.0
-
-    df = math.log(num_nodes) / math.log(num_edges)
-    
-    return round(df, 3)
-
+    if resonant_pair:
+        return {
+            "documents": [resonant_pair[0], resonant_pair[1]],
+            "resonance": max_resonance
+        }
+    return {}
 def calculate_ontological_resonance(text1: str, text2: str) -> float:
     """
     Calculates the ontological resonance between two texts.
