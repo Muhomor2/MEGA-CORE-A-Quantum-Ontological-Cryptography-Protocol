@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mega_core"
+version = "0.0.1"
+authors = [
+  { name="Аlpha Synthesis", email="alpha_synthesis@example.com" },
+]
+description = "A quantum ontological cryptography protocol."
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/mega-core-alpha-synthesis"
+Issues = "https://github.com/mega-core-alpha-synthesis/issues"
