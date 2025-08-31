@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MEGA-CORE Protocol Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>MEGA-CORE Protocol Portal</h1>
+    <form action="/" method="post">
+        <label for="text1">Text 1:</label>
+        <textarea id="text1" name="text1"></textarea>
+        <label for="text2">Text 2:</label>
+        <textarea id="text2" name="text2"></textarea>
+        <input type="submit" value="Analyze">
+    </form>
+    {% if result %}
+    <div class="result">
+        <h2>Analysis Results:</h2>
+        <p><strong>Semantic Fractal Dimension (Df) of Text 1:</strong> {{ result.df1 }}</p>
+        <p><strong>Semantic Fractal Dimension (Df) of Text 2:</strong> {{ result.df2 }}</p>
+        <p><strong>Ontological Resonance:</strong> {{ result.resonance }}</p>
+    </div>
+    {% endif %}
+</body>
+</html>
