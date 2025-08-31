@@ -5,7 +5,7 @@ import math
 from collections import Counter
 import networkx as nx
 from skyfield.api import load
-from skyfield.almanac import find_solar_eclipses, find_lunar_eclipses, find_solstices
+from skyfield import almanac
 from datetime import datetime
 
 def calculate_semantic_fractal_dimension(text: str) -> float:
@@ -124,7 +124,7 @@ def find_next_solar_eclipse():
     """
     t0 = ts.now()
     t1 = ts.utc(t0.utc.year + 2, 1, 1)
-    t, y, x = find_solar_eclipses(eph, t0, t1)
+    t, y, x = almanac.find_solar_eclipses(eph, t0, t1)
     return t[0]
 
 def find_next_lunar_eclipse():
@@ -133,7 +133,7 @@ def find_next_lunar_eclipse():
     """
     t0 = ts.now()
     t1 = ts.utc(t0.utc.year + 2, 1, 1)
-    t, y, x = find_lunar_eclipses(eph, t0, t1)
+    t, y, x = almanac.find_lunar_eclipses(eph, t0, t1)
     return t[0]
 
 def find_nearest_solstice_after(date: datetime):
@@ -142,7 +142,7 @@ def find_nearest_solstice_after(date: datetime):
     """
     t0 = ts.from_datetime(date)
     t1 = ts.utc(t0.utc.year + 2, 1, 1)
-    t, y, x = find_solstices(eph, t0, t1)
+    t, y, x = almanac.find_solstices(eph, t0, t1)
     return t[0]
 
 def calculate_time_difference(t1, t2):
