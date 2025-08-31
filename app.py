@@ -1,45 +1,10 @@
 # app.py
 # The web portal for the MEGA-CORE protocol.
 
-from flask import Flask, render_template_string, request
+from flask import Flask, render_template, request
 from src.core import calculate_semantic_fractal_dimension, calculate_ontological_resonance
 
 app = Flask(__name__)
-
-HTML_FORM = """
-<!DOCTYPE html>
-<html>
-<head>
-    <title>MEGA-CORE Protocol Portal</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        h1 { color: #333; }
-        label { display: block; margin-top: 10px; }
-        textarea { width: 100%; height: 100px; }
-        input[type="submit"] { margin-top: 10px; padding: 10px 20px; }
-        .result { margin-top: 20px; padding: 15px; border: 1px solid #ccc; background-color: #f9f9f9; }
-    </style>
-</head>
-<body>
-    <h1>MEGA-CORE Protocol Portal</h1>
-    <form action="/" method="post">
-        <label for="text1">Text 1:</label>
-        <textarea id="text1" name="text1"></textarea>
-        <label for="text2">Text 2:</label>
-        <textarea id="text2" name="text2"></textarea>
-        <input type="submit" value="Analyze">
-    </form>
-    {% if result %}
-    <div class="result">
-        <h2>Analysis Results:</h2>
-        <p><strong>Semantic Fractal Dimension (Df) of Text 1:</strong> {{ result.df1 }}</p>
-        <p><strong>Semantic Fractal Dimension (Df) of Text 2:</strong> {{ result.df2 }}</p>
-        <p><strong>Ontological Resonance:</strong> {{ result.resonance }}</p>
-    </div>
-    {% endif %}
-</body>
-</html>
-"""
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -58,7 +23,7 @@ def index():
             "resonance": resonance,
         }
 
-    return render_template_string(HTML_FORM, result=result)
+    return render_template("index.html", result=result)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
