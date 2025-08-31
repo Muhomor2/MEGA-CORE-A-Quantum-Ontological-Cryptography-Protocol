@@ -27,7 +27,6 @@ def calculate_semantic_fractal_dimension(text: str) -> float:
     num_edges = G.number_of_edges()
 
     # 4. Calculate Df based on network properties
-    # Df = log(number of nodes) / log(number of edges) - a simplified box-counting variant
     if num_edges <= 1:
         return 1.0
 
@@ -53,6 +52,43 @@ def calculate_ontological_resonance(text1: str, text2: str) -> float:
     
     # Resonance is amplified by the presence of a connection
     return round(jaccard_index, 3)
+
+# New functionality for handling multiple documents
+class OntologicalField:
+    """
+    Represents a collection of texts as a single, coherent ontological field.
+    """
+    def __init__(self, documents: list[str]):
+        self.documents = documents
+        self.corpus = " ".join(documents)
+
+    def get_corpus_df(self) -> float:
+        """
+        Returns the Df of the entire corpus.
+        """
+        return calculate_semantic_fractal_dimension(self.corpus)
+
+    def get_document_resonance(self, doc_index1: int, doc_index2: int) -> float:
+        """
+        Returns the ontological resonance between two documents in the field.
+        """
+        text1 = self.documents[doc_index1]
+        text2 = self.documents[doc_index2]
+        return calculate_ontological_resonance(text1, text2)
+
+# New function to read texts from files
+def load_texts_from_files(file_paths: list[str]) -> list[str]:
+    """
+    Loads text content from a list of files.
+    """
+    texts = []
+    for path in file_paths:
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                texts.append(f.read())
+        except FileNotFoundError:
+            print(f"Error: File not found at {path}")
+    return texts
 
 if __name__ == '__main__':
     # Examples of usage
