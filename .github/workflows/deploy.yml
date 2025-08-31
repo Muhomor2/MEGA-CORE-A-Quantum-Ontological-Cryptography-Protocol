@@ -12,31 +12,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Conda
-        uses: conda-incubator/setup-miniconda@v3
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          auto-update-conda: true
-          python-version: 3.10
-          environment-file: environment.yml
-          activate-environment: MEGA-CORE
+          python-version: '3.10'
 
-      - name: Install spacy model
-        shell: bash -l {0}
+      - name: Install dependencies
         run: |
-          python -m spacy download en_core_web_sm
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run Pytest
-        shell: bash -l {0}
         run: |
           pytest
 
       - name: Run Web Server
-        shell: bash -l {0}
         run: |
           gunicorn --bind 0.0.0.0:5000 app:app &
           echo "Web server is running."
 
       - name: Run Main Script
-        shell: bash -l {0}
         run: |
           python main.py
