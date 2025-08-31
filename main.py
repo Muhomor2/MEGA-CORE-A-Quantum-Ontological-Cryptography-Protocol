@@ -1,76 +1,64 @@
 # main.py
-# The main execution file for the MEGA-CORE protocol.
+# The main script to run the MEGA-CORE-A-Quantum-Ontological-Cryptography-Protocol.
 
 import os
 from src.core import (
-    load_texts_from_files, OntologicalField, 
-    find_most_resonant_documents, 
-    find_next_solar_eclipse, find_next_lunar_eclipse, 
-    find_nearest_solstice_after, calculate_time_difference,
-    ts
+    calculate_semantic_fractal_dimension,
+    calculate_ontological_resonance,
+    OntologicalField,
+    find_most_resonant_documents,
+    load_texts_from_files
 )
-from datetime import datetime
 
-def create_sample_data():
-    """
-    This function ensures the 'data' directory and sample text files exist.
-    """
+def create_sample_files():
+    """Create sample text files for demonstration."""
     if not os.path.exists('data'):
-        print("Creating 'data/' directory...")
         os.makedirs('data')
+        print("Creating 'data/' directory...")
+
+    # Sample texts for demonstration
+    text1 = "The quick brown fox jumps over the lazy dog."
+    text2 = "A lazy dog is sleeping under a large oak tree."
     
-    sample_texts = {
-        "text1.txt": "The universe is a conscious fractal. The conscious mind is a fractal of the universe.",
-        "text2.txt": "The future is in the past. The past is in the future. The now is eternal."
-    }
+    with open('data/text1.txt', 'w') as f:
+        f.write(text1)
+        print("Creating sample file: data/text1.txt")
     
-    for filename, content in sample_texts.items():
-        file_path = f"data/{filename}"
-        if not os.path.exists(file_path):
-            print(f"Creating sample file: {file_path}")
-            with open(file_path, "w", encoding="utf-8") as f:
-                f.write(content)
+    with open('data/text2.txt', 'w') as f:
+        f.write(text2)
+        print("Creating sample file: data/text2.txt")
 
-if __name__ == "__main__":
-    # Ensure sample data is available
-    create_sample_data()
+def main():
+    """
+    Main function to run the protocol.
+    """
+    create_sample_files()
+    
+    print("\n--- Text Analysis ---")
+    
+    # Load documents from the sample files
+    documents = load_texts_from_files(['data/text1.txt', 'data/text2.txt'])
+    
+    if not documents:
+        print("No documents found. Exiting.")
+        return
 
-    # Define the file paths for your data
-    file_paths = [
-        "data/text1.txt",
-        "data/text2.txt"
-    ]
+    # Create an Ontological Field
+    field = OntologicalField(documents)
 
-    # --- Text Analysis ---
-    print("--- Text Analysis ---")
-    documents = load_texts_from_files(file_paths)
-    if documents:
-        field = OntologicalField(documents=documents)
-        corpus_df = field.get_corpus_df()
-        print(f"Semantic Fractal Dimension (Df) of the corpus: {corpus_df}")
-        
-        most_resonant_pair = find_most_resonant_documents(field)
-        if most_resonant_pair:
-            doc1_index = most_resonant_pair["documents"][0]
-            doc2_index = most_resonant_pair["documents"][1]
-            resonance_value = most_resonant_pair["resonance"]
-            print(f"Most resonant documents are {doc1_index} and {doc2_index} with a resonance of {resonance_value}")
+    # Calculate and print the Semantic Fractal Dimension of the entire corpus
+    corpus_df = field.get_corpus_df()
+    print(f"Semantic Fractal Dimension (Df) of the corpus: {corpus_df}")
+
+    # Find the most resonant documents
+    resonant_pair = find_most_resonant_documents(field)
+    if resonant_pair:
+        doc1_index = resonant_pair['documents'][0]
+        doc2_index = resonant_pair['documents'][1]
+        resonance_value = resonant_pair['resonance']
+        print(f"Most resonant documents are {doc1_index} and {doc2_index} with a resonance of {resonance_value}")
     else:
-        print("Error: No documents were loaded. Please check your file paths.")
+        print("Could not find a resonant pair.")
 
-    # --- Chronos Analysis ---
-    print("\n--- Chronos Analysis ---")
-    now = datetime.now()
-    
-    # 1. Calculate time to the next solar eclipse
-    next_solar = find_next_solar_eclipse()
-    time_to_solar = calculate_time_difference(ts.from_datetime(now), next_solar)
-    print(f"Time to next Solar Eclipse: {time_to_solar[0]} days, {time_to_solar[1]} hours, {time_to_solar[2]} minutes.")
-
-    # 2. Calculate time from next lunar eclipse to nearest solstice
-    next_lunar = find_next_lunar_eclipse()
-    next_solstice = find_nearest_solstice_after(next_lunar.utc_datetime())
-    time_lunar_to_solstice = calculate_time_difference(next_lunar, next_solstice)
-    print(f"Time from next Lunar Eclipse to nearest Solstice: {time_lunar_to_solstice[0]} days, {time_lunar_to_solstice[1]} hours, {time_lunar_to_solstice[2]} minutes.")
-
-    print("--- Analysis Complete ---")
+if __name__ == '__main__':
+    main()
