@@ -7,6 +7,18 @@ import networkx as nx
 from skyfield.api import load
 from skyfield import almanac
 from datetime import datetime
+import Levenshtein
+import spacy
+
+# Load the small English model for spaCy
+# This is a one-time download, usually done on the host machine.
+# For GitHub Actions, we'll install it via a separate command.
+try:
+    nlp = spacy.load("en_core_web_sm")
+except ImportError:
+    # Handle the case where the model is not yet downloaded
+    print("SpaCy model 'en_core_web_sm' not found. Please install it with 'python -m spacy download en_core_web_sm'.")
+    nlp = None
 
 def calculate_semantic_fractal_dimension(text: str) -> float:
     """
@@ -55,6 +67,18 @@ def calculate_ontological_resonance(text1: str, text2: str) -> float:
     
     return round(jaccard_index, 3)
 
+def calculate_semantic_overlap(text1: str, text2: str) -> float:
+    """
+    Calculates a deeper semantic overlap based on string distance.
+    This offers a more granular measure of textual alignment.
+    """
+    # Use Levenshtein distance as a simple measure of similarity
+    distance = Levenshtein.distance(text1, text2)
+    max_len = max(len(text1), len(text2))
+    if max_len == 0:
+        return 1.0  # Or 0.0, depending on definition. 1.0 means perfect match.
+    return 1.0 - (distance / max_len)
+
 class OntologicalField:
     """
     Represents a collection of texts as a single, coherent ontological field.
@@ -76,6 +100,14 @@ class OntologicalField:
         text1 = self.documents[doc_index1]
         text2 = self.documents[doc_index2]
         return calculate_ontological_resonance(text1, text2)
+
+    def get_document_semantic_overlap(self, doc_index1: int, doc_index2: int) -> float:
+        """
+        Returns the semantic overlap between two documents in the field.
+        """
+        text1 = self.documents[doc_index1]
+        text2 = self.documents[doc_index2]
+        return calculate_semantic_overlap(text1, text2)
 
 def find_most_resonant_documents(field: OntologicalField) -> dict:
     """
