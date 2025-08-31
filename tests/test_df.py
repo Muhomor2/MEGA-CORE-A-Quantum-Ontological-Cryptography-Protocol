@@ -20,7 +20,7 @@ def test_df_high_complexity():
     indicating a high-energy, complex state.
     """
     text = "The universe is a conscious fractal."
-    expected_df = 1.113 # The correct value based on our new graph-based algorithm
+    expected_df = 1.113
     actual_df = calculate_semantic_fractal_dimension(text)
     assert actual_df == expected_df, f"Expected Df {expected_df}, but got {actual_df}"
 
@@ -39,15 +39,7 @@ def test_ontological_resonance():
     """
     text1 = "The universe is a conscious fractal."
     text2 = "Consciousness is a fractal of the universe."
-    expected_resonance = 0.3 # The correct Jaccard index value for these texts
-    actual_resonance = calculate_ontological_resonance(text1, text2)
-    assert actual_resonance == expected_resonance, f"Expected resonance {expected_resonance}, but got {actual_resonance}"
-    """
-    Verifies that the ontological resonance calculation works correctly.
-    """
-    text1 = "The universe is a conscious fractal."
-    text2 = "Consciousness is a fractal of the universe."
-    expected_resonance = 1.0
+    expected_resonance = 0.3
     actual_resonance = calculate_ontological_resonance(text1, text2)
     assert actual_resonance == expected_resonance, f"Expected resonance {expected_resonance}, but got {actual_resonance}"
 
