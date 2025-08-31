@@ -2,7 +2,7 @@
 # The main execution file for the MEGA-CORE protocol.
 
 import os
-from src.core import load_texts_from_files, OntologicalField
+from src.core import load_texts_from_files, OntologicalField, find_most_resonant_documents
 
 def create_sample_data():
     """
@@ -81,9 +81,13 @@ if __name__ == "__main__":
         corpus_df = field.get_corpus_df()
         print(f"Semantic Fractal Dimension (Df) of the corpus: {corpus_df}")
 
-        # You can add more analysis here, for example, comparing individual documents
+        # Find and print the most resonant pair of documents
         if len(field.documents) >= 2:
-            resonance = field.get_document_resonance(0, 1)
-            print(f"Ontological Resonance between document 1 and 2: {resonance}")
-
+            most_resonant_pair = find_most_resonant_documents(field)
+            if most_resonant_pair:
+                doc1_index = most_resonant_pair["documents"][0]
+                doc2_index = most_resonant_pair["documents"][1]
+                resonance_value = most_resonant_pair["resonance"]
+                print(f"Most resonant documents are {doc1_index} and {doc2_index} with a resonance of {resonance_value}")
+    
     print("--- Analysis Complete ---")
