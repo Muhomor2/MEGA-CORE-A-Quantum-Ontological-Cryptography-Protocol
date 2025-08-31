@@ -2,7 +2,14 @@
 # The main execution file for the MEGA-CORE protocol.
 
 import os
-from src.core import load_texts_from_files, OntologicalField, find_most_resonant_documents
+from src.core import (
+    load_texts_from_files, OntologicalField, 
+    find_most_resonant_documents, 
+    find_next_solar_eclipse, find_next_lunar_eclipse, 
+    find_nearest_solstice_after, calculate_time_difference,
+    ts
+)
+from datetime import datetime
 
 def create_sample_data():
     """
@@ -64,30 +71,27 @@ if __name__ == "__main__":
         "data/hamlet.txt"
     ]
 
-    # Load the texts from the specified files
+    # --- Text Analysis ---
+    print("--- Text Analysis ---")
     documents = load_texts_from_files(file_paths)
-
-    if not documents:
-        print("Error: No documents were loaded. Please check your file paths.")
-    else:
-        # Create an ontological field from the documents
+    if documents:
         field = OntologicalField(documents=documents)
-
-        # Print a summary of the analysis
-        print("--- Ontological Field Analysis ---")
-        print(f"Total documents loaded: {len(field.documents)}")
-        
-        # Calculate and print the Df for the entire corpus
         corpus_df = field.get_corpus_df()
         print(f"Semantic Fractal Dimension (Df) of the corpus: {corpus_df}")
 
-        # Find and print the most resonant pair of documents
-        if len(field.documents) >= 2:
-            most_resonant_pair = find_most_resonant_documents(field)
-            if most_resonant_pair:
-                doc1_index = most_resonant_pair["documents"][0]
-                doc2_index = most_resonant_pair["documents"][1]
-                resonance_value = most_resonant_pair["resonance"]
-                print(f"Most resonant documents are {doc1_index} and {doc2_index} with a resonance of {resonance_value}")
+    # --- Chronos Analysis ---
+    print("\n--- Chronos Analysis ---")
+    now = datetime.now()
     
+    # 1. Calculate time to the next solar eclipse
+    next_solar = find_next_solar_eclipse()
+    time_to_solar = calculate_time_difference(ts.from_datetime(now), next_solar)
+    print(f"Time to next Solar Eclipse: {time_to_solar[0]} days, {time_to_solar[1]} hours, {time_to_solar[2]} minutes.")
+
+    # 2. Calculate time from next lunar eclipse to nearest solstice
+    next_lunar = find_next_lunar_eclipse()
+    next_solstice = find_nearest_solstice_after(next_lunar.utc_datetime())
+    time_lunar_to_solstice = calculate_time_difference(next_lunar, next_solstice)
+    print(f"Time from next Lunar Eclipse to nearest Solstice: {time_lunar_to_solstice[0]} days, {time_lunar_to_solstice[1]} hours, {time_lunar_to_solstice[2]} minutes.")
+
     print("--- Analysis Complete ---")
