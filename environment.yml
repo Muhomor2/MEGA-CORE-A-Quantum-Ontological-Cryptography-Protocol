@@ -6,3 +6,4 @@ dependencies:
   - pip
   - pytest
   - flake8
+  - networkx
