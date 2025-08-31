@@ -9,9 +9,8 @@ dependencies:
   - flake8
   - networkx
   - skyfield
-  - python-Levenshtein
   - Flask
   - gunicorn
-  - spacy
   - pip:
-    - en_core_web_sm
+    - python-Levenshtein
+    - spacy
