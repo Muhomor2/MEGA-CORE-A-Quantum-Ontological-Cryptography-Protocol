@@ -5,6 +5,9 @@ import math
 from collections import Counter
 import networkx as nx
 from skyfield.api import load
+from skyfield.framelib import ecliptic_frame
+from skyfield.positionlib import position_of
+from skyfield.timelib import Time
 from skyfield import almanac
 from datetime import datetime
 import Levenshtein
@@ -145,30 +148,56 @@ eph = load('de421.bsp')
 
 def find_next_solar_eclipse():
     """
-    Finds the next solar eclipse from the current date.
+    Finds the next solar eclipse from the current date using an alternative method.
     """
+    sun, moon, earth = eph['sun'], eph['moon'], eph['earth']
     t0 = ts.now()
     t1 = ts.utc(t0.utc.year + 2, 1, 1)
-    t, y, x = almanac.find_solar_eclipses(eph, t0, t1)
-    return t[0]
+
+    t, y = almanac.eclipses_in(t0, t1)
+    
+    # Filter for solar eclipses (y == 1, 2 or 3)
+    solar_eclipses = [t[i] for i in range(len(y)) if y[i] in [1, 2, 3]]
+    
+    if solar_eclipses:
+        return solar_eclipses[0]
+    return None
+
 
 def find_next_lunar_eclipse():
     """
-    Finds the next lunar eclipse from the current date.
+    Finds the next lunar eclipse from the current date using an alternative method.
     """
+    sun, moon, earth = eph['sun'], eph['moon'], eph['earth']
     t0 = ts.now()
     t1 = ts.utc(t0.utc.year + 2, 1, 1)
-    t, y, x = almanac.find_lunar_eclipses(eph, t0, t1)
-    return t[0]
+
+    t, y = almanac.eclipses_in(t0, t1)
+
+    # Filter for lunar eclipses (y == 0)
+    lunar_eclipses = [t[i] for i in range(len(y)) if y[i] == 0]
+
+    if lunar_eclipses:
+        return lunar_eclipses[0]
+    return None
+
 
 def find_nearest_solstice_after(date: datetime):
     """
-    Finds the nearest solstice after a given date.
+    Finds the nearest solstice after a given date using an alternative method.
     """
     t0 = ts.from_datetime(date)
     t1 = ts.utc(t0.utc.year + 2, 1, 1)
-    t, y, x = almanac.find_solstices(eph, t0, t1)
-    return t[0]
+
+    t, y = almanac.seasons(eph, t0)
+    
+    # Filter for solstices (y == 0 for March, 1 for June, 2 for September, 3 for December)
+    solstices = [t[i] for i in range(len(y)) if y[i] in [1, 3]]
+    
+    if solstices:
+        return solstices[0]
+    return None
+
 
 def calculate_time_difference(t1, t2):
     """
