@@ -1,3 +1,9 @@
-# requirements.txt
-# No external libraries are needed for the example code.
-# If you add more complex algorithms, list your dependencies here.
+pytest
+flake8
+networkx
+skyfield
+gunicorn
+python-Levenshtein
+spacy
+flask
+https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.0/en_core_web_sm-3.7.0.tar.gz
