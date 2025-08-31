@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Pytest
         run: |
-          pytest
+          python -m pytest
 
       - name: Run Web Server
         run: |
