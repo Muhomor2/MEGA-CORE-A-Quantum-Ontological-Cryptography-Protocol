@@ -21,6 +21,7 @@ jobs:
           activate-environment: MEGA-CORE
 
       - name: Install spacy model
+        shell: bash -l {0}
         run: |
           python -m spacy download en_core_web_sm
 
@@ -33,7 +34,7 @@ jobs:
         shell: bash -l {0}
         run: |
           gunicorn --bind 0.0.0.0:5000 app:app &
-          echo "Web server is running. Awaiting input from main.py..."
+          echo "Web server is running."
 
       - name: Run Main Script
         shell: bash -l {0}
