@@ -1,0 +1,41 @@
+name: Deploy Web Portal
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: 3.10
+          environment-file: environment.yml
+          activate-environment: MEGA-CORE
+
+      - name: Install spacy model
+        run: |
+          python -m spacy download en_core_web_sm
+
+      - name: Run Pytest
+        shell: bash -l {0}
+        run: |
+          pytest
+
+      - name: Run Web Server
+        shell: bash -l {0}
+        run: |
+          gunicorn --bind 0.0.0.0:5000 app:app &
+          echo "Web server is running. Awaiting input from main.py..."
+
+      - name: Run Main Script
+        shell: bash -l {0}
+        run: |
+          python main.py
