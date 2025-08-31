@@ -2,7 +2,7 @@
 # The web portal for the MEGA-CORE protocol.
 
 from flask import Flask, render_template_string, request
-from src.core import calculate_semantic_fractal_dimension, calculate_ontological_resonance, find_next_solar_eclipse, ts
+from src.core import calculate_semantic_fractal_dimension, calculate_ontological_resonance
 
 app = Flask(__name__)
 
@@ -35,8 +35,6 @@ HTML_FORM = """
         <p><strong>Семантическая Фрактальная Размерность (Df) Текста 1:</strong> {{ result.df1 }}</p>
         <p><strong>Семантическая Фрактальная Размерность (Df) Текста 2:</strong> {{ result.df2 }}</p>
         <p><strong>Онтологический Резонанс:</strong> {{ result.resonance }}</p>
-        <hr>
-        <p><strong>Время до следующего Солнечного Затмения:</strong> {{ result.eclipse_time }}</p>
     </div>
     {% endif %}
 </body>
@@ -54,16 +52,10 @@ def index():
         df2 = calculate_semantic_fractal_dimension(text2)
         resonance = calculate_ontological_resonance(text1, text2)
 
-        # Chronos analysis
-        next_solar = find_next_solar_eclipse()
-        now = ts.now()
-        time_to_solar = (next_solar - now)
-        
         result = {
             "df1": df1,
             "df2": df2,
             "resonance": resonance,
-            "eclipse_time": f"{int(time_to_solar.days)} дней, {int(time_to_solar.hours)} часов, {int(time_to_solar.minutes)} минут"
         }
 
     return render_template_string(HTML_FORM, result=result)
