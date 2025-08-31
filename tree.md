@@ -16,3 +16,26 @@
 │   └── example_df.py                      (Core Df calculation algorithm)
 └── tests/
     └── test_df.py                         (Verification protocol for Df calculation)
+/MEGA-CORE-A-Quantum-Ontological-Cryptography-Protocol
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
+├── data/
+│   ├── text1.txt
+│   └── text2.txt
+├── src/
+│   ├── __init__.py
+│   └── core.py
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       └── script.js
+├── templates/
+│   └── index.html
+├── .gitignore
+├── app.py
+├── main.py
+├── requirements.txt
+├── Report.md
+└── README.md
