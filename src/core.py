@@ -11,14 +11,7 @@ import Levenshtein
 import spacy
 
 # Load the small English model for spaCy
-# This is a one-time download, usually done on the host machine.
-# For GitHub Actions, we'll install it via a separate command.
-try:
-    nlp = spacy.load("en_core_web_sm")
-except ImportError:
-    # Handle the case where the model is not yet downloaded
-    print("SpaCy model 'en_core_web_sm' not found. Please install it with 'python -m spacy download en_core_web_sm'.")
-    nlp = None
+nlp = spacy.load("en_core_web_sm")
 
 def calculate_semantic_fractal_dimension(text: str) -> float:
     """
